@@ -25,6 +25,7 @@
 (define-constant ERR_NOT_TOKEN_OWNER (err u101))
 (define-constant ERR_INVALID_AMOUNT (err u102))
 (define-constant ERR_INVALID_RECIPIENT (err u103))
+(define-constant ERR_MAX_SUPPLY_EXCEEDED (err u104))
 
 (define-data-var contract-owner principal tx-sender)
 (define-constant TOKEN_URI u"https://cyan-rational-cuckoo-19.mypinata.cloud/ipfs/QmYwAFtPctz8UrPLpfiC6xmVnPwXqkEjXrL3mw4im8Hyxo")
@@ -59,13 +60,19 @@
   (ok (some TOKEN_URI))
 )
 
-(define-public (mint (amount uint))
+(define-public (mint (amount uint) (recipient principal))
   (begin
     (asserts! (is-eq tx-sender (var-get contract-owner)) ERR_OWNER_ONLY)
-    (asserts! (> amount u0) ERR_INVALID_AMOUNT) 
-    (asserts! (<= (+ amount (var-get total-minted)) MAX_SUPPLY) (err u104))  ;; Ensure max supply limit is not exceeded
-    (ft-mint? phi amount tx-sender)
-    (var-set total-minted (+ (var-get total-minted) amount))
+    (asserts! (> amount u0) ERR_INVALID_AMOUNT)
+    (let (
+      (current-minted (var-get total-minted))
+      (new-total (+ current-minted amount))
+    )
+      (asserts! (<= new-total MAX_SUPPLY) ERR_MAX_SUPPLY_EXCEEDED)
+      (try! (ft-mint? phi amount recipient))
+      (var-set total-minted new-total)
+      (ok true)
+    )
   )
 )
 
@@ -87,5 +94,6 @@
 )
 
 (begin
-    (try! (ft-mint? phi u7777777 'ST7FM7445TXTJEJ54GBCV2GJPCJF887NXH5VC99A))
+    (try! (ft-mint? phi u7777777 'ST39CTMYWSMSGJR89EKFSVG86ZWXNRTA1NPKKEP2J))
+    (var-set total-minted u7777777)
 )
