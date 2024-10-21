@@ -5,17 +5,16 @@ authors = []
 telemetry = true
 cache_dir = "./.cache"
 
-[contracts.PHI]
-path = "contracts/PHI.clar"
+# Define all contracts in the `contracts` section
+[contracts]
+PHI = { path = "contracts/PHI.clar" }
+X2410201 = { path = "contracts/X2410201.clar" }
+X2410202 = { path = "contracts/X2410202.clar" }
+X2410203 = { path = "contracts/X2410203.clar" }
+R2410201 = { path = "contracts/R2410201.clar" }
+R2410202 = { path = "contracts/R2410202.clar" }
+R2410203 = { path = "contracts/R2410203.clar" }
 
 [repl.analysis]
 passes = ["check_checker"]
-check_checker = { trusted_sender = false, trusted_caller = false, callee_filter = false }
-
-# Check-checker settings:
-# trusted_sender: if true, inputs are trusted after tx_sender has been checked.
-# trusted_caller: if true, inputs are trusted after contract-caller has been checked.
-# callee_filter: if true, untrusted data may be passed into a private function without a
-# warning, if it gets checked inside. This check will also propagate up to the
-# caller.
-# More informations: https://www.hiro.so/blog/new-safety-checks-in-clarinet
+check_checker = { trusted_sender = false, trusted_contracts = [] }

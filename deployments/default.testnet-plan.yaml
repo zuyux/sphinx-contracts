@@ -10,9 +10,51 @@ plan:
       transactions:
         - contract-publish:
             contract-name: PHI
-            expected-sender: ST39CTMYWSMSGJR89EKFSVG86ZWXNRTA1NPKKEP2J
-            cost: 30030
+            expected-sender: ST1Q1JNCJXBC4PF7JH17JDBS6GBP96SFBKJEEYBJD
+            cost: 36650
             path: contracts/PHI.clar
+            anchor-block-only: true
+            clarity-version: 1
+        - contract-publish:
+            contract-name: R2410201
+            expected-sender: ST1Q1JNCJXBC4PF7JH17JDBS6GBP96SFBKJEEYBJD
+            cost: 21670
+            path: contracts/R2410201.clar
+            anchor-block-only: true
+            clarity-version: 1
+        - contract-publish:
+            contract-name: R2410202
+            expected-sender: ST1Q1JNCJXBC4PF7JH17JDBS6GBP96SFBKJEEYBJD
+            cost: 21670
+            path: contracts/R2410202.clar
+            anchor-block-only: true
+            clarity-version: 1
+        - contract-publish:
+            contract-name: R2410203
+            expected-sender: ST1Q1JNCJXBC4PF7JH17JDBS6GBP96SFBKJEEYBJD
+            cost: 21670
+            path: contracts/R2410203.clar
+            anchor-block-only: true
+            clarity-version: 1
+        - contract-publish:
+            contract-name: X2410201
+            expected-sender: ST1Q1JNCJXBC4PF7JH17JDBS6GBP96SFBKJEEYBJD
+            cost: 30360
+            path: contracts/X2410201.clar
+            anchor-block-only: true
+            clarity-version: 1
+        - contract-publish:
+            contract-name: X2410202
+            expected-sender: ST1Q1JNCJXBC4PF7JH17JDBS6GBP96SFBKJEEYBJD
+            cost: 30360
+            path: contracts/X2410202.clar
+            anchor-block-only: true
+            clarity-version: 1
+        - contract-publish:
+            contract-name: X2410203
+            expected-sender: ST1Q1JNCJXBC4PF7JH17JDBS6GBP96SFBKJEEYBJD
+            cost: 30360
+            path: contracts/X2410203.clar
             anchor-block-only: true
             clarity-version: 1
       epoch: "2.05"

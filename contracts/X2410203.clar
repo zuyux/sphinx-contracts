@@ -1,6 +1,6 @@
 ;; Constants
-(define-constant question-id u2410201)
-(define-constant metadata u"QmXMpYUQR8QjHr1Lgk7etdh3E5Tqyh7JTq8E6RPjiBV7SK")
+(define-constant question-id u2410203)
+(define-constant metadata u"QmbTShEq4s6mT816AAgPu9j36txn6VfXGJHv6fgVxpwNXx")
 
 ;; Store the contract owner (deployer of the contract)
 (define-constant owner tx-sender)

@@ -21,21 +21,25 @@
 
 (define-fungible-token phi)
 
+;; Error Constants
 (define-constant ERR_OWNER_ONLY (err u100))
 (define-constant ERR_NOT_TOKEN_OWNER (err u101))
 (define-constant ERR_INVALID_AMOUNT (err u102))
 (define-constant ERR_INVALID_RECIPIENT (err u103))
 (define-constant ERR_MAX_SUPPLY_EXCEEDED (err u104))
+(define-constant ERR_INVALID_OWNER (err u105))
 
+;; Contract Variables and Constants
 (define-data-var contract-owner principal tx-sender)
-(define-constant TOKEN_URI u"https://cyan-rational-cuckoo-19.mypinata.cloud/ipfs/QmYwAFtPctz8UrPLpfiC6xmVnPwXqkEjXrL3mw4im8Hyxo")
+(define-data-var total-minted uint u0)
+(define-constant TOKEN_URI u"https://cyan-rational-cuckoo-19.mypinata.cloud/ipfs/QmTvJFrHc9AB4rPNkVD64tYJx1pdwMhDX45K3RL29cg2ww")
 (define-constant TOKEN_NAME "PHI")
 (define-constant TOKEN_SYMBOL "PHI")
 (define-constant TOKEN_DECIMALS u8)
-(define-constant MAX_SUPPLY u7777777)
+(define-constant MAX_SUPPLY u777777777777777)
+(define-constant BURN_ADDRESS 'SP000000000000000000002Q6VF78)
 
-(define-data-var total-minted uint u0)
-
+;; Read-Only Functions
 (define-read-only (get-balance (who principal))
   (ok (ft-get-balance phi who))
 )
@@ -60,10 +64,12 @@
   (ok (some TOKEN_URI))
 )
 
+;; Public Functions
 (define-public (mint (amount uint) (recipient principal))
   (begin
     (asserts! (is-eq tx-sender (var-get contract-owner)) ERR_OWNER_ONLY)
     (asserts! (> amount u0) ERR_INVALID_AMOUNT)
+    (asserts! (not (is-eq recipient BURN_ADDRESS)) ERR_INVALID_RECIPIENT)
     (let (
       (current-minted (var-get total-minted))
       (new-total (+ current-minted amount))
@@ -85,15 +91,23 @@
   (begin
     (asserts! (> amount u0) ERR_INVALID_AMOUNT) 
     (asserts! (is-eq tx-sender sender) ERR_NOT_TOKEN_OWNER) 
-    (asserts! (is-eq recipient 'SP000000000000000000002Q6VF78) ERR_INVALID_RECIPIENT) 
-
+    (asserts! (not (is-eq recipient BURN_ADDRESS)) ERR_INVALID_RECIPIENT) 
     (try! (ft-transfer? phi amount sender recipient))
-    (match memo to-print (print to-print) 0x)
     (ok true)
   )
 )
 
+(define-public (set-owner (new-owner principal))
+  (begin
+    (asserts! (is-eq tx-sender (var-get contract-owner)) ERR_OWNER_ONLY)
+    (asserts! (not (is-eq new-owner BURN_ADDRESS)) ERR_INVALID_OWNER)
+    (var-set contract-owner new-owner)
+    (ok true)
+  )
+)
+
+;; Contract Initialization
 (begin
-    (try! (ft-mint? phi u7777777 'ST39CTMYWSMSGJR89EKFSVG86ZWXNRTA1NPKKEP2J))
-    (var-set total-minted u7777777)
+    (try! (ft-mint? phi MAX_SUPPLY tx-sender))
+    (var-set total-minted MAX_SUPPLY)
 )
