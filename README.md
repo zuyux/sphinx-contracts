@@ -76,3 +76,5 @@ We welcome contributions from the community! If you'd like to help improve Sphin
 
 🔗 **Official Website**: sphinx-brown.vercel.app
 📦 **IPFS Gateway**: Hosted by [Pinata](https://pinata.cloud/).
+
+> [Sphins Deployed Contracts](https://explorer.hiro.so/address/ST1Q1JNCJXBC4PF7JH17JDBS6GBP96SFBKJEEYBJD?chain=testnet)
